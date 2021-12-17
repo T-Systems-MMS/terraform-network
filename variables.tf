@@ -21,44 +21,44 @@ variable "tags" {
 }
 # resource definition
 variable "virtual_network" {
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 variable "subnet" {
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 variable "public_ip" {
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 variable "network_interface" {
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 variable "network_security_group" {
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 variable "network_interface_security_group_association" {
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 variable "private_endpoint" {
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 
 # resource configuration
 variable "network_interface_config" {
-  type    = any
+  type        = any
   default     = {}
   description = "resource configuration, default settings are defined within locals and merged with var settings"
 }

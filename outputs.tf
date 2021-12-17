@@ -34,7 +34,7 @@ output "network_interface" {
   value = {
     for network_interface in keys(azurerm_network_interface.network_interface) :
     network_interface => {
-      id         = azurerm_network_interface.network_interface[network_interface].id
+      id = azurerm_network_interface.network_interface[network_interface].id
     }
   }
 }
