@@ -1,25 +1,3 @@
-variable "resource_name" {
-  type = any
-  default = {
-    virtual_network = {}
-    subnet          = {}
-  }
-  description = "Azure Network"
-}
-variable "location" {
-  type        = string
-  description = "location where the resource should be created"
-}
-variable "resource_group_name" {
-  type        = string
-  description = "resource_group whitin the resource should be created"
-}
-variable "tags" {
-  type        = any
-  default     = {}
-  description = "mapping of tags to assign, default settings are defined within locals and merged with var settings"
-}
-# resource definition
 variable "virtual_network" {
   type        = any
   default     = {}
@@ -56,35 +34,44 @@ variable "private_endpoint" {
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 
-# resource configuration
-variable "network_interface_config" {
-  type        = any
-  default     = {}
-  description = "resource configuration, default settings are defined within locals and merged with var settings"
-}
-
 locals {
   default = {
-    tags = {}
     # resource definition
-    virtual_network = {}
+    virtual_network = {
+      name = ""
+      tags = {}
+    }
     subnet = {
+      name                                           = ""
       service_endpoints                              = []
       enforce_private_link_endpoint_network_policies = false
       enforce_private_link_service_network_policies  = false
     }
     public_ip = {
+      name              = ""
       allocation_method = "Static"
       sku               = "Basic"
+      tags              = {}
     }
     network_interface = {
+      name                          = ""
       dns_servers                   = []
       enable_accelerated_networking = false
       enable_ip_forwarding          = false
       internal_dns_name_labe        = ""
+      ip_configuration = {
+        name                          = ""
+        primary                       = true
+        private_ip_address_allocation = "Static"
+        private_ip_address_version    = "IPv4"
+        public_ip_address_id          = ""
+      }
+      tags = {}
     }
     network_security_group = {
+      name = ""
       security_rule = {
+        name                       = ""
         direction                  = "Inbound"
         access                     = "Allow"
         protocol                   = "Tcp"
@@ -92,77 +79,79 @@ locals {
         source_port_range          = "*"
         destination_address_prefix = "*"
       }
+      tags = {}
     }
     network_interface_security_group_association = {}
     private_endpoint = {
-      private_dns_zone_group     = {}
-      private_service_connection = {}
-    }
-    # resource definition
-    network_interface_config = {
-      ip_configuration = {
-        primary                       = true
-        private_ip_address_allocation = "Static"
-        private_ip_address_version    = "IPv4"
-        public_ip_address_id          = ""
+      name = ""
+      private_dns_zone_group = {
+        name = ""
       }
+      private_service_connection = {
+        name = ""
+      }
+      tags = {}
     }
   }
 
-  # merge custom and default values
-  tags = merge(local.default.tags, var.tags)
-
-  # deep merge over merged config and use defaults if no variable is set
+  # compare and merge custom and default values
+  network_interface_values = {
+    for network_interface in keys(var.network_interface) :
+    network_interface => merge(local.default.network_interface, var.network_interface[network_interface])
+  }
+  network_security_group_values = {
+    for network_security_group in keys(var.network_security_group) :
+    network_security_group => merge(local.default.network_security_group, var.network_security_group[network_security_group])
+  }
+  private_endpoint_values = {
+    for private_endpoint in keys(var.private_endpoint) :
+    private_endpoint => merge(local.default.private_endpoint, var.private_endpoint[private_endpoint])
+  }
+  # merge all custom and default values
   virtual_network = {
-    # get all config
-    for config in keys(var.virtual_network) :
-    config => merge(local.default.virtual_network, var.virtual_network[config])
+    for virtual_network in keys(var.virtual_network) :
+    virtual_network => merge(local.default.virtual_network, var.virtual_network[virtual_network])
   }
   subnet = {
-    # get all config
-    for config in keys(var.subnet) :
-    config => merge(local.default.subnet, var.subnet[config])
+    for subnet in keys(var.subnet) :
+    subnet => merge(local.default.subnet, var.subnet[subnet])
   }
   public_ip = {
-    # get all config
-    for config in keys(var.public_ip) :
-    config => merge(local.default.public_ip, var.public_ip[config])
+    for public_ip in keys(var.public_ip) :
+    public_ip => merge(local.default.public_ip, var.public_ip[public_ip])
   }
   network_interface = {
-    # get all config
-    for config in keys(var.network_interface) :
-    config => merge(local.default.network_interface, var.network_interface[config])
-  }
-  network_interface_config = {
-    # get all config
-    for instance in keys(var.network_interface_config) :
-    instance => {
-      for config in keys(local.default.network_interface_config) :
-      config => {
-        for config_instance in keys(var.network_interface_config[instance][config]) :
-        config_instance => merge(local.default.network_interface_config[config], var.network_interface_config[instance][config][config_instance])
+    for network_interface in keys(var.network_interface) :
+    network_interface => merge(
+      local.network_interface_values[network_interface],
+      {
+        for config in ["ip_configuration"] :
+        config => merge(local.default.network_interface[config], local.network_interface_values[network_interface][config])
       }
-    }
+    )
   }
   network_security_group = {
-    # get all config
-    for instance in keys(var.network_security_group) :
-    instance => {
-      for config in keys(local.default.network_security_group) :
-      config => {
-        for config_instance in keys(var.network_security_group[instance][config]) :
-        config_instance => merge(local.default.network_security_group[config], var.network_security_group[instance][config][config_instance])
+    for network_security_group in keys(var.network_security_group) :
+    network_security_group => merge(
+      local.network_security_group_values[network_security_group],
+      {
+        for config in ["security_rule"] :
+        config => merge(local.default.network_security_group[config], local.network_security_group_values[network_security_group][config])
       }
-    }
+    )
   }
   network_interface_security_group_association = {
-    # get all config
-    for config in keys(var.network_interface_security_group_association) :
-    config => merge(local.default.network_interface_security_group_association, var.network_interface_security_group_association[config])
+    for network_interface_security_group_association in keys(var.network_interface_security_group_association) :
+    network_interface_security_group_association => merge(local.default.network_interface_security_group_association, var.network_interface_security_group_association[network_interface_security_group_association])
   }
   private_endpoint = {
-    # get all config
-    for config in keys(var.private_endpoint) :
-    config => merge(local.default.private_endpoint, var.private_endpoint[config])
+    for private_endpoint in keys(var.private_endpoint) :
+    private_endpoint => merge(
+      local.private_endpoint_values[private_endpoint],
+      {
+        for config in ["private_dns_zone_group", "private_service_connection"] :
+        config => merge(local.default.private_endpoint[config], local.private_endpoint_values[private_endpoint][config])
+      }
+    )
   }
 }
