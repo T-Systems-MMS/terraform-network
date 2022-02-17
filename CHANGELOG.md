@@ -1,8 +1,8 @@
 # Changelog
 
-## [0.0.1](https://github.com/T-Systems-MMS/terraform-network/tree/0.0.1) (2021-12-17)
+## [0.0.1](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/0.0.1) (2021-12-17)
 
-[Full Changelog](https://github.com/T-Systems-MMS/terraform-network/compare/764b194a74b2f4f25c51cefb2988d5d46651976b...0.0.1)
+[Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/764b194a74b2f4f25c51cefb2988d5d46651976b...0.0.1)
 
 
 
