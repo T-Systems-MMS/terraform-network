@@ -1,5 +1,5 @@
 module "network" {
-  source = "../modules/azure/terraform-network"
+  source = "registry.terraform.io/T-Systems-MMS/network/azurerm"
   virtual_network = {
     env = {
       name                = "service-env-vn"
