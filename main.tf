@@ -137,3 +137,109 @@ resource "azurerm_private_endpoint" "private_endpoint" {
 
   tags = local.private_endpoint[each.key].tags
 }
+
+/** Virtuell Network Gateway */
+resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
+  for_each = var.virtual_network_gateway
+
+  name                             = local.virtual_network_gateway[each.key].name == "" ? each.key : local.virtual_network_gateway[each.key].name
+  location                         = local.virtual_network_gateway[each.key].location
+  resource_group_name              = local.virtual_network_gateway[each.key].resource_group_name
+  type                             = local.virtual_network_gateway[each.key].type
+  vpn_type                         = local.virtual_network_gateway[each.key].vpn_type
+  enable_bgp                       = local.virtual_network_gateway[each.key].enable_bgp
+  active_active                    = local.virtual_network_gateway[each.key].active_active
+  private_ip_address_enabled       = local.virtual_network_gateway[each.key].private_ip_address_enabled
+  default_local_network_gateway_id = local.virtual_network_gateway[each.key].default_local_network_gateway_id
+  sku                              = local.virtual_network_gateway[each.key].sku
+  generation                       = local.virtual_network_gateway[each.key].generation
+
+  dynamic "ip_configuration" {
+    for_each = local.virtual_network_gateway[each.key].ip_configuration
+
+    content {
+      name                          = local.virtual_network_gateway[each.key].ip_configuration[ip_configuration.key].name == "" ? ip_configuration.key : local.virtual_network_gateway[each.key].ip_configuration[ip_configuration.key].name
+      private_ip_address_allocation = local.virtual_network_gateway[each.key].ip_configuration[ip_configuration.key].private_ip_address_allocation
+      subnet_id                     = local.virtual_network_gateway[each.key].ip_configuration[ip_configuration.key].subnet_id
+      public_ip_address_id          = local.virtual_network_gateway[each.key].ip_configuration[ip_configuration.key].public_ip_address_id
+    }
+  }
+  // dynamic "vpn_client_configuration" {
+  //   for_each = local.virtual_network_gateway[each.key].vpn_client_configuration != {} ? [1] : []
+
+  //   content {}
+  // }
+  tags = local.virtual_network_gateway[each.key].tags
+}
+
+/** Network Gateway Connection */
+resource "azurerm_virtual_network_gateway_connection" "virtual_network_gateway_connection" {
+  for_each = var.virtual_network_gateway_connection
+
+  name                       = local.virtual_network_gateway_connection[each.key].name == "" ? each.key : local.virtual_network_gateway_connection[each.key].name
+  location                   = local.virtual_network_gateway_connection[each.key].location
+  resource_group_name        = local.virtual_network_gateway_connection[each.key].resource_group_name
+  type                       = local.virtual_network_gateway_connection[each.key].type
+  virtual_network_gateway_id = local.virtual_network_gateway_connection[each.key].virtual_network_gateway_id
+  // authorization_key = local.virtual_network_gateway_connection[each.key].authorization_key
+  dpd_timeout_seconds                = local.virtual_network_gateway_connection[each.key].dpd_timeout_seconds
+  express_route_circuit_id           = local.virtual_network_gateway_connection[each.key].express_route_circuit_id
+  peer_virtual_network_gateway_id    = local.virtual_network_gateway_connection[each.key].peer_virtual_network_gateway_id
+  local_azure_ip_address_enabled     = local.virtual_network_gateway_connection[each.key].local_azure_ip_address_enabled
+  local_network_gateway_id           = local.virtual_network_gateway_connection[each.key].local_network_gateway_id
+  routing_weight                     = local.virtual_network_gateway_connection[each.key].routing_weight
+  shared_key                         = local.virtual_network_gateway_connection[each.key].shared_key
+  connection_mode                    = local.virtual_network_gateway_connection[each.key].connection_mode
+  connection_protocol                = local.virtual_network_gateway_connection[each.key].connection_protocol
+  enable_bgp                         = local.virtual_network_gateway_connection[each.key].enable_bgp
+  express_route_gateway_bypass       = local.virtual_network_gateway_connection[each.key].express_route_gateway_bypass
+  use_policy_based_traffic_selectors = local.virtual_network_gateway_connection[each.key].use_policy_based_traffic_selectors
+
+  dynamic "traffic_selector_policy" {
+    for_each = local.virtual_network_gateway_connection[each.key].traffic_selector_policy != {} ? [1] : []
+
+    content {
+      local_address_cidrs  = local.virtual_network_gateway_connection[each.key].traffic_selector_policy.local_address_cidrs
+      remote_address_cidrs = local.virtual_network_gateway_connection[each.key].traffic_selector_policy.remote_address_cidrs
+    }
+  }
+
+  dynamic "ipsec_policy" {
+    for_each = local.virtual_network_gateway_connection[each.key].ipsec_policy != {} ? [1] : []
+
+    content {
+      dh_group         = local.virtual_network_gateway_connection[each.key].ipsec_policy.dh_group
+      ike_encryption   = local.virtual_network_gateway_connection[each.key].ipsec_policy.ike_encryption
+      ike_integrity    = local.virtual_network_gateway_connection[each.key].ipsec_policy.ike_integrity
+      ipsec_encryption = local.virtual_network_gateway_connection[each.key].ipsec_policy.ipsec_encryption
+      ipsec_integrity  = local.virtual_network_gateway_connection[each.key].ipsec_policy.ipsec_integrity
+      pfs_group        = local.virtual_network_gateway_connection[each.key].ipsec_policy.pfs_group
+      sa_datasize      = local.virtual_network_gateway_connection[each.key].ipsec_policy.sa_datasize
+      sa_lifetime      = local.virtual_network_gateway_connection[each.key].ipsec_policy.sa_lifetime
+    }
+  }
+  tags = local.virtual_network_gateway_connection[each.key].tags
+}
+
+/** local Network Gateway Connection */
+resource "azurerm_local_network_gateway" "local_network_gateway" {
+  for_each = var.local_network_gateway
+
+  name                = local.local_network_gateway[each.key].name == "" ? each.key : local.local_network_gateway[each.key].name
+  location            = local.local_network_gateway[each.key].location
+  resource_group_name = local.local_network_gateway[each.key].resource_group_name
+  address_space       = local.local_network_gateway[each.key].address_space
+  gateway_address     = local.local_network_gateway[each.key].gateway_address
+
+  dynamic "bgp_settings" {
+    for_each = local.local_network_gateway[each.key].bgp_settings != {} ? [1] : []
+
+    content {
+      asn                 = local.local_network_gateway[each.key].bgp_settings.asn
+      bgp_peering_address = local.local_network_gateway[each.key].bgp_settings.bgp_peering_address
+      peer_weight         = local.local_network_gateway[each.key].bgp_settings.peer_weight
+    }
+  }
+
+  tags = local.local_network_gateway[each.key].tags
+}

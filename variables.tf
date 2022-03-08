@@ -33,6 +33,21 @@ variable "private_endpoint" {
   default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
+variable "virtual_network_gateway" {
+  type        = any
+  default     = {}
+  description = "resource definition, default settings are defined within locals and merged with var settings"
+}
+variable "virtual_network_gateway_connection" {
+  type        = any
+  default     = {}
+  description = "resource definition, default settings are defined within locals and merged with var settings"
+}
+variable "local_network_gateway" {
+  type        = any
+  default     = {}
+  description = "resource definition, default settings are defined within locals and merged with var settings"
+}
 
 locals {
   default = {
@@ -92,6 +107,47 @@ locals {
       }
       tags = {}
     }
+    virtual_network_gateway = {
+      name                             = ""
+      vpn_type                         = ""
+      enable_bgp                       = false
+      active_active                    = false
+      private_ip_address_enabled       = false
+      default_local_network_gateway_id = ""
+      generation                       = "None"
+      ip_configuration = {
+        name                          = ""
+        private_ip_address_allocation = "Dynamic"
+      }
+      vpn_client_configuration = {}
+      tags                     = {}
+    }
+    virtual_network_gateway_connection = {
+      name                               = ""
+      authorization_key                  = ""
+      dpd_timeout_seconds                = 0
+      express_route_circuit_id           = ""
+      peer_virtual_network_gateway_id    = ""
+      local_azure_ip_address_enabled     = false
+      local_network_gateway_id           = ""
+      routing_weight                     = 10
+      shared_key                         = ""
+      connection_mode                    = "Default"
+      connection_protocol                = "IKEv2"
+      enable_bgp                         = false
+      express_route_gateway_bypass       = false
+      use_policy_based_traffic_selectors = false
+      traffic_selector_policy            = {}
+      ipsec_policy                       = {}
+      tags                               = {}
+    }
+    local_network_gateway = {
+      name            = ""
+      address_space   = []
+      gateway_address = ""
+      bgp_settings    = {}
+      tags            = {}
+    }
   }
 
   # compare and merge custom and default values
@@ -107,6 +163,15 @@ locals {
     for private_endpoint in keys(var.private_endpoint) :
     private_endpoint => merge(local.default.private_endpoint, var.private_endpoint[private_endpoint])
   }
+  virtual_network_gateway_values = {
+    for virtual_network_gateway in keys(var.virtual_network_gateway) :
+    virtual_network_gateway => merge(local.default.virtual_network_gateway, var.virtual_network_gateway[virtual_network_gateway])
+  }
+  virtual_network_gateway_connection_values = {
+    for virtual_network_gateway_connection in keys(var.virtual_network_gateway_connection) :
+    virtual_network_gateway_connection => merge(local.default.virtual_network_gateway_connection, var.virtual_network_gateway_connection[virtual_network_gateway_connection])
+  }
+
   # merge all custom and default values
   virtual_network = {
     for virtual_network in keys(var.virtual_network) :
@@ -136,7 +201,10 @@ locals {
       local.network_security_group_values[network_security_group],
       {
         for config in ["security_rule"] :
-        config => merge(local.default.network_security_group[config], local.network_security_group_values[network_security_group][config])
+        config => {
+          for key in keys(local.network_security_group_values[network_security_group][config]) :
+          key => merge(local.default.network_security_group[config], local.network_security_group_values[network_security_group][config][key])
+        }
       }
     )
   }
@@ -149,9 +217,36 @@ locals {
     private_endpoint => merge(
       local.private_endpoint_values[private_endpoint],
       {
-        for config in ["private_dns_zone_group", "private_service_connection"] :
+        for config in ["private_dns_zone_group", "vpn_client_configuration"] :
         config => merge(local.default.private_endpoint[config], local.private_endpoint_values[private_endpoint][config])
       }
     )
+  }
+  virtual_network_gateway = {
+    for virtual_network_gateway in keys(var.virtual_network_gateway) :
+    virtual_network_gateway => merge(
+      local.virtual_network_gateway_values[virtual_network_gateway],
+      {
+        for config in ["ip_configuration", "vpn_client_configuration"] :
+        config => {
+          for key in keys(local.virtual_network_gateway_values[virtual_network_gateway][config]) :
+          key => merge(local.default.virtual_network_gateway[config], local.virtual_network_gateway_values[virtual_network_gateway][config][key])
+        }
+      }
+    )
+  }
+  virtual_network_gateway_connection = {
+    for virtual_network_gateway_connection in keys(var.virtual_network_gateway_connection) :
+    virtual_network_gateway_connection => merge(
+      local.virtual_network_gateway_connection_values[virtual_network_gateway_connection],
+      {
+        for config in ["traffic_selector_policy", "ipsec_policy"] :
+        config => merge(local.default.virtual_network_gateway_connection[config], local.virtual_network_gateway_connection_values[virtual_network_gateway_connection][config])
+      }
+    )
+  }
+  local_network_gateway = {
+    for local_network_gateway in keys(var.local_network_gateway) :
+    local_network_gateway => merge(local.default.local_network_gateway, var.local_network_gateway[local_network_gateway])
   }
 }
