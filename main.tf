@@ -29,6 +29,20 @@ resource "azurerm_subnet" "subnet" {
 
   enforce_private_link_endpoint_network_policies = local.subnet[each.key].enforce_private_link_endpoint_network_policies
   enforce_private_link_service_network_policies  = local.subnet[each.key].enforce_private_link_service_network_policies
+
+  dynamic "delegation" {
+    for_each = local.subnet[each.key].delegation
+    content {
+      name = local.subnet[each.key].delegation[delegation.key].name == "" ? delegation.key : local.subnet[each.key].delegation[delegation.key].name
+      dynamic "service_delegation" {
+        for_each = local.subnet[each.key].delegation[delegation.key].service_delegation
+        content {
+          name    = local.subnet[each.key].delegation[delegation.key].service_delegation[service_delegation.key].name
+          actions = local.subnet[each.key].delegation[delegation.key].service_delegation[service_delegation.key].actions
+        }
+      }
+    }
+  }
 }
 
 /** Public IP */
@@ -102,7 +116,7 @@ resource "azurerm_network_security_group" "network_security_group" {
 resource "azurerm_subnet_network_security_group_association" "subnet_network_security_group_association" {
   for_each = var.subnet_network_security_group_association
 
-  subnet_id      = local.subnet_network_security_group_association[each.key].subnet_id
+  subnet_id                 = local.subnet_network_security_group_association[each.key].subnet_id
   network_security_group_id = local.subnet_network_security_group_association[each.key].network_security_group_id
 }
 resource "azurerm_network_interface_security_group_association" "network_interface_security_group_association" {
@@ -254,12 +268,12 @@ resource "azurerm_local_network_gateway" "local_network_gateway" {
 resource "azurerm_virtual_network_peering" "virtual_network_peering" {
   for_each = var.virtual_network_peering
 
-  name = local.virtual_network_peering[each.key].name == "" ? each.key : local.virtual_network_peering[each.key].name
-  resource_group_name = local.virtual_network_peering[each.key].resource_group_name
-  virtual_network_name = local.virtual_network_peering[each.key].virtual_network_name
-  remote_virtual_network_id  = local.virtual_network_peering[each.key].remote_virtual_network_id
+  name                         = local.virtual_network_peering[each.key].name == "" ? each.key : local.virtual_network_peering[each.key].name
+  resource_group_name          = local.virtual_network_peering[each.key].resource_group_name
+  virtual_network_name         = local.virtual_network_peering[each.key].virtual_network_name
+  remote_virtual_network_id    = local.virtual_network_peering[each.key].remote_virtual_network_id
   allow_virtual_network_access = local.virtual_network_peering[each.key].allow_virtual_network_access
-  allow_forwarded_traffic  = local.virtual_network_peering[each.key].allow_forwarded_traffic
-  allow_gateway_transit = local.virtual_network_peering[each.key].allow_gateway_transit
-  use_remote_gateways = local.virtual_network_peering[each.key].use_remote_gateways
+  allow_forwarded_traffic      = local.virtual_network_peering[each.key].allow_forwarded_traffic
+  allow_gateway_transit        = local.virtual_network_peering[each.key].allow_gateway_transit
+  use_remote_gateways          = local.virtual_network_peering[each.key].use_remote_gateways
 }

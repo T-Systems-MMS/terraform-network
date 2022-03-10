@@ -71,6 +71,7 @@ locals {
       service_endpoints                              = []
       enforce_private_link_endpoint_network_policies = false
       enforce_private_link_service_network_policies  = false
+      delegation                                     = {}
     }
     public_ip = {
       name              = ""
@@ -106,7 +107,7 @@ locals {
       }
       tags = {}
     }
-    subnet_network_security_group_association = {}
+    subnet_network_security_group_association    = {}
     network_interface_security_group_association = {}
     private_endpoint = {
       name = ""
@@ -160,15 +161,19 @@ locals {
       tags            = {}
     }
     virtual_network_peering = {
-      name = ""
+      name                         = ""
       allow_virtual_network_access = false
-      allow_forwarded_traffic = false
-      allow_gateway_transit = false
-      use_remote_gateways = false
+      allow_forwarded_traffic      = false
+      allow_gateway_transit        = false
+      use_remote_gateways          = false
     }
   }
 
   # compare and merge custom and default values
+  subnet_values = {
+    for subnet in keys(var.subnet) :
+    subnet => merge(local.default.subnet, var.subnet[subnet])
+  }
   network_interface_values = {
     for network_interface in keys(var.network_interface) :
     network_interface => merge(local.default.network_interface, var.network_interface[network_interface])
@@ -197,7 +202,16 @@ locals {
   }
   subnet = {
     for subnet in keys(var.subnet) :
-    subnet => merge(local.default.subnet, var.subnet[subnet])
+    subnet => merge(
+      local.subnet_values[subnet],
+      {
+        for config in ["delegation"] :
+        config => {
+          for key in keys(local.subnet_values[subnet][config]) :
+          key => merge(local.default.subnet[config], local.subnet_values[subnet][config][key])
+        }
+      }
+    )
   }
   public_ip = {
     for public_ip in keys(var.public_ip) :
@@ -209,7 +223,10 @@ locals {
       local.network_interface_values[network_interface],
       {
         for config in ["ip_configuration"] :
-        config => merge(local.default.network_interface[config], local.network_interface_values[network_interface][config])
+        config => {
+          for key in keys(local.network_interface_values[network_interface][config]) :
+          key => merge(local.default.network_interface[config], local.network_interface_values[network_interface][config][key])
+        }
       }
     )
   }
