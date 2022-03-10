@@ -23,6 +23,11 @@ variable "network_security_group" {
   default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
+variable "subnet_network_security_group_association" {
+  type        = any
+  default     = {}
+  description = "resource definition, default settings are defined within locals and merged with var settings"
+}
 variable "network_interface_security_group_association" {
   type        = any
   default     = {}
@@ -44,6 +49,11 @@ variable "virtual_network_gateway_connection" {
   description = "resource definition, default settings are defined within locals and merged with var settings"
 }
 variable "local_network_gateway" {
+  type        = any
+  default     = {}
+  description = "resource definition, default settings are defined within locals and merged with var settings"
+}
+variable "virtual_network_peering" {
   type        = any
   default     = {}
   description = "resource definition, default settings are defined within locals and merged with var settings"
@@ -96,6 +106,7 @@ locals {
       }
       tags = {}
     }
+    subnet_network_security_group_association = {}
     network_interface_security_group_association = {}
     private_endpoint = {
       name = ""
@@ -147,6 +158,13 @@ locals {
       gateway_address = ""
       bgp_settings    = {}
       tags            = {}
+    }
+    virtual_network_peering = {
+      name = ""
+      allow_virtual_network_access = false
+      allow_forwarded_traffic = false
+      allow_gateway_transit = false
+      use_remote_gateways = false
     }
   }
 
@@ -208,6 +226,10 @@ locals {
       }
     )
   }
+  subnet_network_security_group_association = {
+    for subnet_network_security_group_association in keys(var.subnet_network_security_group_association) :
+    subnet_network_security_group_association => merge(local.default.subnet_network_security_group_association, var.subnet_network_security_group_association[subnet_network_security_group_association])
+  }
   network_interface_security_group_association = {
     for network_interface_security_group_association in keys(var.network_interface_security_group_association) :
     network_interface_security_group_association => merge(local.default.network_interface_security_group_association, var.network_interface_security_group_association[network_interface_security_group_association])
@@ -248,5 +270,9 @@ locals {
   local_network_gateway = {
     for local_network_gateway in keys(var.local_network_gateway) :
     local_network_gateway => merge(local.default.local_network_gateway, var.local_network_gateway[local_network_gateway])
+  }
+  virtual_network_peering = {
+    for virtual_network_peering in keys(var.virtual_network_peering) :
+    virtual_network_peering => merge(local.default.virtual_network_peering, var.virtual_network_peering[virtual_network_peering])
   }
 }
