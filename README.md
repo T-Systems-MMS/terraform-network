@@ -24,34 +24,47 @@ This module manages Azure Network Configuration.
 
 | Name | Type |
 |------|------|
+| azurerm_local_network_gateway.local_network_gateway | resource |
 | azurerm_network_interface.network_interface | resource |
 | azurerm_network_interface_security_group_association.network_interface_security_group_association | resource |
 | azurerm_network_security_group.network_security_group | resource |
 | azurerm_private_endpoint.private_endpoint | resource |
 | azurerm_public_ip.public_ip | resource |
 | azurerm_subnet.subnet | resource |
+| azurerm_subnet_network_security_group_association.subnet_network_security_group_association | resource |
 | azurerm_virtual_network.virtual_network | resource |
+| azurerm_virtual_network_gateway.virtual_network_gateway | resource |
+| azurerm_virtual_network_gateway_connection.virtual_network_gateway_connection | resource |
+| azurerm_virtual_network_peering.virtual_network_peering | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| local_network_gateway | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 | network_interface | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 | network_interface_security_group_association | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 | network_security_group | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 | private_endpoint | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 | public_ip | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 | subnet | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
+| subnet_network_security_group_association | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 | virtual_network | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
+| virtual_network_gateway | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
+| virtual_network_gateway_connection | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
+| virtual_network_peering | resource definition, default settings are defined within locals and merged with var settings | `any` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| local_network_gateway | azurerm_local_network_gateway results |
 | network_interface | azurerm_network_interface results |
+| network_security_group | azurerm_network_security_group results |
 | public_ip | azurerm_public_ip results |
 | subnet | azurerm_subnet results |
 | virtual_network | azurerm_virtual_network results |
+| virtual_network_gateway | azurerm_virtual_network_gateway results |
 
 ## Examples
 

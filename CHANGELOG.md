@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.0](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/1.0.0) (2022-02-17)
+
+[Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/0.0.1...1.0.0)
+
+**Merged pull requests:**
+
+- change variable behaviour [\#2](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/2) ([michaelamattes](https://github.com/michaelamattes))
+- Setup [\#1](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/1) ([michaelamattes](https://github.com/michaelamattes))
+
 ## [0.0.1](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/0.0.1) (2021-12-17)
 
 [Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/764b194a74b2f4f25c51cefb2988d5d46651976b...0.0.1)
