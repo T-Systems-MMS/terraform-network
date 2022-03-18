@@ -38,3 +38,30 @@ output "network_interface" {
     }
   }
 }
+output "network_security_group" {
+  description = "azurerm_network_security_group results"
+  value = {
+    for network_security_group in keys(azurerm_network_security_group.network_security_group) :
+    network_security_group => {
+      id = azurerm_network_security_group.network_security_group[network_security_group].id
+    }
+  }
+}
+output "virtual_network_gateway" {
+  description = "azurerm_virtual_network_gateway results"
+  value = {
+    for virtual_network_gateway in keys(azurerm_virtual_network_gateway.virtual_network_gateway) :
+    virtual_network_gateway => {
+      id = azurerm_virtual_network_gateway.virtual_network_gateway[virtual_network_gateway].id
+    }
+  }
+}
+output "local_network_gateway" {
+  description = "azurerm_local_network_gateway results"
+  value = {
+    for local_network_gateway in keys(azurerm_local_network_gateway.local_network_gateway) :
+    local_network_gateway => {
+      id = azurerm_local_network_gateway.local_network_gateway[local_network_gateway].id
+    }
+  }
+}
