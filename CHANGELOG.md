@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/HEAD)
+
+[Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.0...HEAD)
+
+**Closed issues:**
+
+- Resource network\_security\_group is missing [\#5](https://github.com/T-Systems-MMS/terraform-azurerm-network/issues/5)
+- delegation not supported for subnet part [\#3](https://github.com/T-Systems-MMS/terraform-azurerm-network/issues/3)
+
 ## [1.0.0](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/1.0.0) (2022-02-17)
 
 [Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/0.0.1...1.0.0)
