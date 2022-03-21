@@ -122,8 +122,8 @@ resource "azurerm_subnet_network_security_group_association" "subnet_network_sec
 resource "azurerm_network_interface_security_group_association" "network_interface_security_group_association" {
   for_each = var.network_interface_security_group_association
 
-  network_interface_id      = local.network_security_group[each.key].network_interface_id
-  network_security_group_id = local.network_security_group[each.key].network_security_group_id
+  network_interface_id      = local.network_interface_security_group_association[each.key].network_interface_id
+  network_security_group_id = local.network_interface_security_group_association[each.key].network_security_group_id
 }
 
 /** Private Endpoint */
