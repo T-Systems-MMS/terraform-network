@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/1.0.2) (2022-03-21)
+
+[Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.1...1.0.2)
+
+**Merged pull requests:**
+
+- add network\_interface\_security\_group\_association [\#7](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/7) ([michaelamattes](https://github.com/michaelamattes))
+
 ## [1.0.1](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/1.0.1) (2022-03-18)
 
 [Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.0...1.0.1)
