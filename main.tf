@@ -49,13 +49,21 @@ resource "azurerm_subnet" "subnet" {
 resource "azurerm_public_ip" "public_ip" {
   for_each = var.public_ip
 
-  name                = local.public_ip[each.key].name == "" ? each.key : local.public_ip[each.key].name
-  location            = local.public_ip[each.key].location
-  resource_group_name = local.public_ip[each.key].resource_group_name
-  allocation_method   = local.public_ip[each.key].allocation_method
-  sku                 = local.public_ip[each.key].sku
-
-  tags = local.public_ip[each.key].tags
+  name                    = local.public_ip[each.key].name == "" ? each.key : local.public_ip[each.key].name
+  location                = local.public_ip[each.key].location
+  resource_group_name     = local.public_ip[each.key].resource_group_name
+  allocation_method       = local.public_ip[each.key].allocation_method
+  zones                   = local.public_ip[each.key].zones
+  domain_name_label       = local.public_ip[each.key].domain_name_label
+  edge_zone               = local.public_ip[each.key].edge_zone
+  idle_timeout_in_minutes = local.public_ip[each.key].idle_timeout_in_minutes
+  ip_tags                 = local.public_ip[each.key].ip_tags
+  ip_version              = local.public_ip[each.key].ip_version
+  public_ip_prefix_id     = local.public_ip[each.key].public_ip_prefix_id
+  reverse_fqdn            = local.public_ip[each.key].reverse_fqdn
+  sku                     = local.public_ip[each.key].sku
+  sku_tier                = local.public_ip[each.key].sku_tier
+  tags                    = local.public_ip[each.key].tags
 }
 
 /** Network Interface */

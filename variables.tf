@@ -74,10 +74,19 @@ locals {
       delegation                                     = {}
     }
     public_ip = {
-      name              = ""
-      allocation_method = "Static"
-      sku               = "Basic"
-      tags              = {}
+      name                    = ""
+      allocation_method       = "Static"
+      zones                   = [1, 2, 3]
+      domain_name_label       = null
+      edge_zone               = null
+      idle_timeout_in_minutes = null
+      ip_tags                 = {}
+      ip_version              = null
+      public_ip_prefix_id     = null
+      reverse_fqdn            = null
+      sku                     = "Basic"
+      sku_tier                = null
+      tags                    = {}
     }
     network_interface = {
       name                          = ""
