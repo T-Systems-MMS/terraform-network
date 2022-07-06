@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.3](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/1.0.3) (2022-05-09)
+
+[Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.2...1.0.3)
+
+**Merged pull requests:**
+
+- Update hashicorp/setup-terraform action to v2 [\#15](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/15) ([renovate[bot]](https://github.com/apps/renovate))
+- Update creyD/prettier\_action action to v4 [\#14](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/14) ([renovate[bot]](https://github.com/apps/renovate))
+- Update actions/checkout action [\#13](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/13) ([renovate[bot]](https://github.com/apps/renovate))
+- Update github-actions-x/commit action to v2.9 [\#12](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/12) ([renovate[bot]](https://github.com/apps/renovate))
+- Update actions/checkout action to v2.4.2 [\#9](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/9) ([renovate[bot]](https://github.com/apps/renovate))
+- add renovate config [\#8](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/8) ([michaelamattes](https://github.com/michaelamattes))
+
 ## [1.0.2](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/1.0.2) (2022-03-21)
 
 [Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.1...1.0.2)

@@ -11,14 +11,14 @@ This module manages Azure Network Configuration.
 
 | Name | Version |
 |------|---------|
-| terraform | >=0.12 |
-| azurerm | >=2.19.0 |
+| terraform | >=1.1 |
+| azurerm | >=3.7.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | >=2.19.0 |
+| azurerm | >=3.7.0 |
 
 ## Resources
 
