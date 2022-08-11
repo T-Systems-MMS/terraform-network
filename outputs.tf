@@ -16,6 +16,7 @@ output "subnet" {
       id                   = azurerm_subnet.subnet[subnet].id
       name                 = azurerm_subnet.subnet[subnet].name
       virtual_network_name = azurerm_subnet.subnet[subnet].virtual_network_name
+      address_prefixes     = azurerm_subnet.subnet[subnet].address_prefixes
     }
   }
 }
