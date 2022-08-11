@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.0](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/2.0.0) (2022-07-06)
+
+[Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.3...2.0.0)
+
+**Implemented enhancements:**
+
+- update azurerm provider [\#17](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/17) ([michaelamattes](https://github.com/michaelamattes))
+
 ## [1.0.3](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/1.0.3) (2022-05-09)
 
 [Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.2...1.0.3)
