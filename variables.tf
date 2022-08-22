@@ -121,10 +121,16 @@ locals {
     private_endpoint = {
       name = ""
       private_dns_zone_group = {
-        name = ""
+        name                 = "private-dns-zone-group"
+        private_dns_zone_ids = null
       }
       private_service_connection = {
-        name = ""
+        name                              = "private-service-connection"
+        is_manual_connection              = false
+        private_connection_resource_id    = null
+        private_connection_resource_alias = null
+        subresource_names                 = null
+        request_message                   = null
       }
       tags = {}
     }
@@ -265,7 +271,7 @@ locals {
     private_endpoint => merge(
       local.private_endpoint_values[private_endpoint],
       {
-        for config in ["private_dns_zone_group", "vpn_client_configuration"] :
+        for config in ["private_dns_zone_group", "private_service_connection"] :
         config => merge(local.default.private_endpoint[config], local.private_endpoint_values[private_endpoint][config])
       }
     )

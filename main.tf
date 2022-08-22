@@ -144,23 +144,21 @@ resource "azurerm_private_endpoint" "private_endpoint" {
   subnet_id           = local.private_endpoint[each.key].subnet_id
 
   dynamic "private_dns_zone_group" {
-    for_each = local.private_endpoint[each.key].private_dns_zone_group
+    for_each = local.private_endpoint[each.key].private_dns_zone_group.private_dns_zone_ids != null ? [1] : []
 
     content {
-      name                 = local.private_endpoint[each.key].private_dns_zone_group[private_dns_zone_group.key].name == "" ? private_dns_zone_group.key : local.private_dns_zone_group[each.key].private_dns_zone_group[private_dns_zone_group.key].name
-      private_dns_zone_ids = local.private_endpoint[each.key].private_dns_zone_group[private_dns_zone_group.key].private_dns_zone_ids
+      name                 = local.private_endpoint[each.key].private_dns_zone_group.name
+      private_dns_zone_ids = local.private_endpoint[each.key].private_dns_zone_group.private_dns_zone_ids
     }
   }
 
-  dynamic "private_service_connection" {
-    for_each = local.private_endpoint[each.key].private_service_connection
-
-    content {
-      name                           = local.private_endpoint[each.key].private_service_connection[private_service_connection.key].name == "" ? private_service_connection.key : local.private_service_connection[each.key].private_service_connection[private_service_connection.key].name
-      is_manual_connection           = local.private_endpoint[each.key].private_service_connection[private_service_connection.key].is_manual_connection
-      private_connection_resource_id = local.private_endpoint[each.key].private_service_connection[private_service_connection.key].private_connection_resource_id
-      subresource_names              = local.private_endpoint[each.key].private_service_connection[private_service_connection.key].subresource_names
-    }
+  private_service_connection {
+    name                              = local.private_endpoint[each.key].private_service_connection.name
+    is_manual_connection              = local.private_endpoint[each.key].private_service_connection.is_manual_connection
+    private_connection_resource_id    = local.private_endpoint[each.key].private_service_connection.private_connection_resource_id
+    private_connection_resource_alias = local.private_endpoint[each.key].private_service_connection.private_connection_resource_alias
+    subresource_names                 = local.private_endpoint[each.key].private_service_connection.subresource_names
+    request_message                   = local.private_endpoint[each.key].private_service_connection.request_message
   }
 
   tags = local.private_endpoint[each.key].tags
