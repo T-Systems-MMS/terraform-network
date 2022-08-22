@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/2.0.1) (2022-08-11)
+
+[Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/2.0.0...2.0.1)
+
+**Implemented enhancements:**
+
+- Added address\_prefixes to subnet output [\#18](https://github.com/T-Systems-MMS/terraform-azurerm-network/pull/18) ([danellidesign](https://github.com/danellidesign))
+
 ## [2.0.0](https://github.com/T-Systems-MMS/terraform-azurerm-network/tree/2.0.0) (2022-07-06)
 
 [Full Changelog](https://github.com/T-Systems-MMS/terraform-azurerm-network/compare/1.0.3...2.0.0)
