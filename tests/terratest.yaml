@@ -1,0 +1,10 @@
+functions: ["VirtualNetworkExists", "SubnetExists", "PublicAddressExists", "NetworkInterfaceExists", "PublicAddressShow", "NetworkSecurityGroupShow", "VirtualNetworkGatewayShow"]
+options:
+  PublicAddressShow:
+    allocation_method: "Dynamic"
+    ip_version: "IPv4"
+  NetworkSecurityGroupShow:
+    access: "Deny"
+    direction: "Inbound"
+  VirtualNetworkGatewayShow:
+    sku: "Basic"

@@ -1,0 +1,8 @@
+---
+name: linting
+
+on: [push, pull_request]
+
+jobs:
+  call-linting:
+    uses: telekom-mms/.github/.github/workflows/terraform_linting.yml@main

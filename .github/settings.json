@@ -1,0 +1,24 @@
+{
+  "repos": {
+    "description": "A Terraform module that manages the network resources from the azurerm provider.",
+    "homepage": "https://telekom-mms.github.io",
+    "visibility": "public",
+    "default_branch": "main",
+    "topics": [
+      "terraform",
+      "azure",
+      "virtual_network",
+      "subnet",
+      "public_ip",
+      "network_interface",
+      "network_security_group",
+      "subnet_network_security_group_association",
+      "network_interface_security_group_association",
+      "local_network_gateway",
+      "virtual_network_gateway",
+      "private_endpoint",
+      "virtual_network_gateway_connection",
+      "virtual_network_peering"
+    ]
+  }
+}
