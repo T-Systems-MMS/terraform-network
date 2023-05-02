@@ -88,7 +88,7 @@ module "network" {
       resource_group_name                            = "service-env-rg"
       virtual_network_name                           = module.network.virtual_network.env.name
       address_prefixes                               = ["192.30.100.0/24"]
-      enforce_private_link_endpoint_network_policies = true
+      private_endpoint_network_policies_enabled      = true
       service_endpoints                              = ["Microsoft.AzureCosmosDB"]
     }
   }

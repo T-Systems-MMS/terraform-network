@@ -13,12 +13,12 @@ module "network" {
   }
   subnet = {
     aks = {
-      name                                           = "service-aks-sub"
-      resource_group_name                            = "service-env-rg"
-      virtual_network_name                           = module.network.virtual_network.env.name
-      address_prefixes                               = ["192.30.100.0/24"]
-      enforce_private_link_endpoint_network_policies = true
-      service_endpoints                              = ["Microsoft.AzureCosmosDB"]
+      name                                      = "service-aks-sub"
+      resource_group_name                       = "service-env-rg"
+      virtual_network_name                      = module.network.virtual_network.env.name
+      address_prefixes                          = ["192.30.100.0/24"]
+      private_endpoint_network_policies_enabled = true
+      service_endpoints                         = ["Microsoft.AzureCosmosDB"]
     }
   }
 }
