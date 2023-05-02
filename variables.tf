@@ -67,11 +67,11 @@ locals {
       tags = {}
     }
     subnet = {
-      name                                           = ""
-      service_endpoints                              = []
-      enforce_private_link_endpoint_network_policies = false
-      enforce_private_link_service_network_policies  = false
-      delegation                                     = {}
+      name                                          = ""
+      service_endpoints                             = []
+      private_endpoint_network_policies_enabled     = false
+      private_link_service_network_policies_enabled = false
+      delegation                                    = {}
     }
     public_ip = {
       name                    = ""

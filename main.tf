@@ -27,8 +27,8 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = local.subnet[each.key].address_prefixes
   service_endpoints    = local.subnet[each.key].service_endpoints
 
-  enforce_private_link_endpoint_network_policies = local.subnet[each.key].enforce_private_link_endpoint_network_policies
-  enforce_private_link_service_network_policies  = local.subnet[each.key].enforce_private_link_service_network_policies
+  private_endpoint_network_policies_enabled     = local.subnet[each.key].private_endpoint_network_policies_enabled
+  private_link_service_network_policies_enabled = local.subnet[each.key].private_link_service_network_policies_enabled
 
   dynamic "delegation" {
     for_each = local.subnet[each.key].delegation
