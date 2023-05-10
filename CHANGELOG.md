@@ -1,12 +1,22 @@
 # Changelog
 
-## [3.0.0](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.0) (2023-05-10)
+## [3.0.1](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.1) (2023-05-10)
 
-[Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/2.0.2...3.0.0)
+[Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/3.0.0...3.0.1)
 
 **Closed issues:**
 
 - Dependency Dashboard [\#11](https://github.com/telekom-mms/terraform-azurerm-network/issues/11)
+
+## [3.0.0](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.0) (2023-05-10)
+
+[Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/2.0.2...3.0.0)
+
+**Merged pull requests:**
+
+- Refactoring [\#23](https://github.com/telekom-mms/terraform-azurerm-network/pull/23) ([michaelamattes](https://github.com/michaelamattes))
+- add Renovate Dependency Dashboard and automatic merge on patch updates [\#21](https://github.com/telekom-mms/terraform-azurerm-network/pull/21) ([michaelamattes](https://github.com/michaelamattes))
+- Update actions/checkout action to v3.1.0 [\#20](https://github.com/telekom-mms/terraform-azurerm-network/pull/20) ([renovate[bot]](https://github.com/apps/renovate))
 
 ## [2.0.2](https://github.com/telekom-mms/terraform-azurerm-network/tree/2.0.2) (2022-08-22)
 
