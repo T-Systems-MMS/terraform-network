@@ -56,14 +56,14 @@ resource "azurerm_subnet" "subnet" {
 
 
   dynamic "delegation" {
-    for_each = local.subnet[each.key].delegation.name == "" ? [] : [0]
+    for_each = local.subnet[each.key].delegation
 
     content {
-      name = local.subnet[each.key].delegation.name == "" ? delegation.key : local.subnet[each.key].delegation.name
+      name = local.subnet[each.key].delegation[delegation.key].name == "" ? delegation.key : local.subnet[each.key].delegation[delegation.key].name
 
       service_delegation {
-        name    = local.subnet[each.key].delegation.service_delegation.name
-        actions = local.subnet[each.key].delegation.service_delegation.actions
+        name    = local.subnet[each.key].delegation[delegation.key].service_delegation.name
+        actions = local.subnet[each.key].delegation[delegation.key].service_delegation.actions
       }
     }
   }
