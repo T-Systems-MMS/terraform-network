@@ -306,13 +306,16 @@ locals {
       local.subnet_values[subnet],
       {
         for config in ["delegation"] :
-        config => merge(
-          merge(local.default.subnet[config], local.subnet_values[subnet][config]),
-          {
-            for subconfig in ["service_delegation"] :
-            subconfig => merge(local.default.subnet[config][subconfig], local.subnet_values[subnet][config][subconfig])
-          }
-        )
+        config => keys(local.subnet_values[subnet][config]) == keys(local.default.subnet[config]) ? {} : {
+          for key in keys(local.subnet_values[subnet][config]) :
+          key => merge(
+            merge(local.default.subnet[config], local.subnet_values[subnet][config][key]),
+            {
+              for subconfig in ["service_delegation"] :
+              subconfig => merge(local.default.subnet[config][subconfig], local.subnet_values[subnet][config][key][subconfig])
+            }
+          )
+        }
       }
     )
   }
