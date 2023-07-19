@@ -176,7 +176,7 @@ resource "azurerm_local_network_gateway" "local_network_gateway" {
   gateway_fqdn        = local.local_network_gateway[each.key].gateway_fqdn
 
   dynamic "bgp_settings" {
-    for_each = flatten(compact(values(local.local_network_gateway[each.key].bgp_settings))) == [] ? [] : [0]
+    for_each = length(compact(values(local.local_network_gateway[each.key].bgp_settings))) > 0 ? [0] : []
 
     content {
       asn                 = local.local_network_gateway[each.key].bgp_settings.asn
@@ -216,11 +216,11 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   }
 
   dynamic "bgp_settings" {
-    for_each = flatten(compact(
+    for_each = length(compact(
       concat(
         [local.virtual_network_gateway[each.key].bgp_settings.asn, local.virtual_network_gateway[each.key].bgp_settings.peer_weight],
         values(local.virtual_network_gateway[each.key].bgp_settings.peering_addresses)
-    ))) == [] ? [] : [0]
+    ))) > 0 ? [0] : []
 
     content {
       asn         = local.virtual_network_gateway[each.key].bgp_settings.asn
@@ -233,7 +233,7 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   }
 
   dynamic "custom_route" {
-    for_each = flatten(compact(values(local.virtual_network_gateway[each.key].custom_route))) == [] ? [] : [0]
+    for_each = length(compact(values(local.virtual_network_gateway[each.key].custom_route))) > 0 ? [0] : []
 
     content {
       address_prefixes = local.virtual_network_gateway[each.key].custom_route.address_prefixes
@@ -350,7 +350,7 @@ resource "azurerm_virtual_network_gateway_connection" "virtual_network_gateway_c
   }
 
   dynamic "ipsec_policy" {
-    for_each = flatten(compact(values(local.virtual_network_gateway_connection[each.key].ipsec_policy))) == [] ? [] : [0]
+    for_each = length(compact(values(local.virtual_network_gateway_connection[each.key].ipsec_policy))) > 0 ? [0] : []
 
     content {
       dh_group         = local.virtual_network_gateway_connection[each.key].ipsec_policy.dh_group
