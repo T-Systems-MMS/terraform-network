@@ -1,12 +1,36 @@
 # Changelog
 
+## [3.0.2](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.2) (2023-07-19)
+
+[Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/3.0.1...3.0.2)
+
+**Implemented enhancements:**
+
+- \[Enhancement\] deprecation warning [\#22](https://github.com/telekom-mms/terraform-azurerm-network/issues/22)
+
+**Fixed bugs:**
+
+- \[Bug\] Error in subnet delegation [\#26](https://github.com/telekom-mms/terraform-azurerm-network/issues/26)
+
+**Closed issues:**
+
+- Error in subnet delegation [\#16](https://github.com/telekom-mms/terraform-azurerm-network/issues/16)
+
 ## [3.0.1](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.1) (2023-05-17)
 
 [Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/3.0.0...3.0.1)
 
+**Fixed bugs:**
+
+- fix errors with subnet delegation [\#27](https://github.com/telekom-mms/terraform-azurerm-network/pull/27) ([sjedlick](https://github.com/sjedlick))
+
 **Closed issues:**
 
 - Dependency Dashboard [\#11](https://github.com/telekom-mms/terraform-azurerm-network/issues/11)
+
+**Merged pull requests:**
+
+- add codespell workflow [\#25](https://github.com/telekom-mms/terraform-azurerm-network/pull/25) ([michaelamattes](https://github.com/michaelamattes))
 
 ## [3.0.0](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.0) (2023-05-10)
 
