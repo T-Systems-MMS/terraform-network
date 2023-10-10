@@ -98,6 +98,12 @@ resource "azurerm_network_interface" "network_interface" {
   location            = local.network_interface[each.key].location
   resource_group_name = local.network_interface[each.key].resource_group_name
 
+  dns_servers                   = local.network_interface[each.key].dns_servers
+  edge_zone                     = local.network_interface[each.key].edge_zone
+  enable_ip_forwarding          = local.network_interface[each.key].enable_ip_forwarding
+  enable_accelerated_networking = local.network_interface[each.key].enable_accelerated_networking
+  internal_dns_name_label       = local.network_interface[each.key].internal_dns_name_label
+
   dynamic "ip_configuration" {
     for_each = local.network_interface[each.key].ip_configuration
 
