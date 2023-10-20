@@ -43,7 +43,7 @@ resource "azurerm_virtual_network" "virtual_network" {
 
 resource "azurerm_subnet" "subnet" {
   #ts:skip=AC_AZURE_0356 terrascan - network security group has to be done separate
-  for_each = var.subnet
+  for_each = { for k, v in var.subnet : k => v if v != null }
 
   name                                          = local.subnet[each.key].name == "" ? each.key : local.subnet[each.key].name
   resource_group_name                           = local.subnet[each.key].resource_group_name
