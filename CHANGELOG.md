@@ -16,6 +16,11 @@
 
 - Error in subnet delegation [\#16](https://github.com/telekom-mms/terraform-azurerm-network/issues/16)
 
+**Merged pull requests:**
+
+- add options to network interface main [\#29](https://github.com/telekom-mms/terraform-azurerm-network/pull/29) ([hektor1966](https://github.com/hektor1966))
+- fix code style failures [\#28](https://github.com/telekom-mms/terraform-azurerm-network/pull/28) ([michaelamattes](https://github.com/michaelamattes))
+
 ## [3.0.1](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.1) (2023-05-17)
 
 [Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/3.0.0...3.0.1)
