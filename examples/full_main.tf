@@ -157,4 +157,107 @@ module "network" {
       }
     }
   }
+  application_gateway = {
+    agw-mms = {
+      location            = "westeurope"
+      resource_group_name = "rg-mms-github"
+      autoscale_configuration = {
+        min_capacity = 1
+      }
+      backend_address_pool = {
+        non-backend = {
+        }
+      }
+      backend_http_settings = {
+        http = {
+        }
+      }
+      frontend_ip_configuration = {
+        (module.network.public_ip["pip-agw-mms"].name) = {
+          public_ip_address_id = module.network.public_ip["pip-agw-mms"].id
+        }
+      }
+      frontend_port = {
+        http = {}
+      }
+      gateway_ip_configuration = {
+        public = {
+          subnet_id = module.network.subnet["snet-agw-mms"].id
+        }
+      }
+      http_listener = {
+        http = {
+          frontend_ip_configuration_name = module.network.public_ip["pip-agw-mms"].name
+          frontend_port_name = "http"
+        }
+      }
+      request_routing_rule = {
+        non-backend = {
+          http_listener_name = "http"
+          backend_http_settings_name = "http"
+          backend_address_pool_name = "non-backend"
+          priority = 1
+          rewrite_rule_set_name = "main"
+        }
+      }
+      private_link_configuration = {
+        pl-agw-mms = {
+          ip_configuration = {
+            (module.network.subnet["snet-app-mms"].name) = {
+              subnet_id = module.network.subnet["snet-app-mms"].id
+              primary = true
+            }
+          }
+        }
+      }
+      ssl_profile = {
+        agw = {
+          ssl_policy = {
+            disabled_protocols = ["TLSv1_0"]
+          }
+        }
+      }
+      ssl_policy = {
+        policy_type = "Predefined"
+        policy_name          = "AppGwSslPolicy20150501"
+      }
+      probe = {
+        https = {
+          match = {
+            status_code = ["200"]
+          }
+        }
+        http = {
+          protocol = "Http"
+        }
+      }
+      rewrite_rule_set = {
+        main = {
+          rewrite_rule = {
+            non_www_to_www = {
+              rule_sequence = 1
+
+              condition = {
+                host = {
+                  pattern     = "telekom-mms.com"
+                  variable    = "http_req_Host"
+                }
+              }
+              request_header_configuration = {
+                host = {
+                  header_name  = "Host"
+                  header_value = "www.telekom-mms.com"
+                }
+              }
+            }
+          }
+        }
+      }
+      tags = {
+        project     = "mms-github"
+        environment = terraform.workspace
+        managed-by  = "terraform"
+      }
+    }
+  }
 }

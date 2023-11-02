@@ -58,6 +58,11 @@ variable "virtual_network_peering" {
   default     = {}
   description = "Resource definition, default settings are defined within locals and merged with var settings. For more information look at [Outputs](#Outputs)."
 }
+variable "application_gateway" {
+  type        = any
+  default     = {}
+  description = "Resource definition, default settings are defined within locals and merged with var settings. For more information look at [Outputs](#Outputs)."
+}
 
 locals {
   default = {
@@ -250,6 +255,197 @@ locals {
       use_remote_gateways          = null
       triggers                     = null
     }
+    application_gateway = {
+      name                              = ""
+      fips_enabled                      = null
+      zones                             = [1, 2, 3] // defined default
+      enable_http2                      = null
+      force_firewall_policy_association = null
+      firewall_policy_id                = null
+      backend_address_pool = {
+        name         = ""
+        fqdns        = null
+        ip_addresses = null
+      }
+      backend_http_settings = {
+        name                                = ""
+        cookie_based_affinity               = "Enabled" // defined default
+        affinity_cookie_name                = null
+        path                                = null
+        port                                = 80 // defined default
+        probe_name                          = null
+        protocol                            = "Http" // defined default
+        request_timeout                     = null
+        host_name                           = null
+        pick_host_name_from_backend_address = null
+        trusted_root_certificate_names      = null
+        authentication_certificate = {
+          name = ""
+        }
+        connection_draining = {}
+      }
+      frontend_ip_configuration = {
+        name                            = ""
+        subnet_id                       = null
+        private_ip_address              = null
+        public_ip_address_id            = null
+        private_ip_address_allocation   = null
+        private_link_configuration_name = null
+      }
+      frontend_port = {
+        name = ""
+        port = 80 // defined default
+      }
+      gateway_ip_configuration = {
+        name = ""
+      }
+      http_listener = {
+        name                       = ""
+        host_name                  = null
+        host_names                 = null
+        protocol                   = "Http" // defined default
+        require_sni                = null
+        ssl_certificate_name       = null
+        firewall_policy_id         = null
+        ssl_profile_name           = null
+        custom_error_configuration = {}
+      }
+      request_routing_rule = {
+        name                        = ""
+        rule_type                   = "Basic" // defined default
+        backend_address_pool_name   = null
+        backend_http_settings_name  = null
+        redirect_configuration_name = null
+        rewrite_rule_set_name       = null
+        url_path_map_name           = null
+        priority                    = null
+      }
+      sku = {
+        name     = "Standard_v2" // defined default
+        tier     = "Standard_v2" // defined default
+        capacity = null
+      }
+      global = {}
+      identity = {
+        type = "UserAssigned" // defined default
+      }
+      private_link_configuration = {
+        name = ""
+        ip_configuration = {
+          name                          = ""
+          private_ip_address_allocation = "Dynamic" // defined default
+          private_ip_address            = null
+        }
+      }
+      trusted_client_certificate = {
+        name = ""
+      }
+      ssl_profile = {
+        name                                 = ""
+        trusted_client_certificate_names     = null
+        verify_client_cert_issuer_dn         = null
+        verify_client_certificate_revocation = null
+        ssl_policy = {
+          disabled_protocols   = null
+          policy_type          = null
+          policy_name          = null
+          cipher_suites        = null
+          min_protocol_version = null
+        }
+      }
+      authentication_certificate = {
+        name = ""
+      }
+      trusted_root_certificate = {
+        name                = ""
+        data                = null
+        key_vault_secret_id = null
+      }
+      ssl_policy = {
+        disabled_protocols   = null
+        policy_type          = null
+        policy_name          = null
+        cipher_suites        = null
+        min_protocol_version = null
+      }
+      probe = {
+        name                                      = ""
+        host                                      = null
+        interval                                  = 5       // defined default
+        protocol                                  = "Https" // defined default
+        path                                      = "/"     // defined default
+        timeout                                   = 3       // defined default
+        unhealthy_threshold                       = 5       // defined default
+        port                                      = null
+        pick_host_name_from_backend_http_settings = true // defined default
+        minimum_servers                           = 1    // defined default
+        match = {
+          body = null
+        }
+      }
+      ssl_certificate = {
+        name                = ""
+        data                = null
+        password            = null
+        key_vault_secret_id = null
+      }
+      url_path_map = {
+        name = ""
+        default_backend_address_pool_name = null
+        default_backend_http_settings_name = null
+        default_redirect_configuration_name = null
+        default_rewrite_rule_set_name = null
+        path_rule = {
+          name = ""
+          backend_address_pool_name = null
+          backend_http_settings_name = null
+          redirect_configuration_name = null
+          rewrite_rule_set_name = null
+          firewall_policy_id = null
+        }
+      }
+      waf_configuration = {
+        enabled                  = true        // defined default
+        firewall_mode            = "Detection" // defined default
+        rule_set_type            = null
+        file_upload_limit_mb     = null
+        request_body_check       = null
+        max_request_body_size_kb = null
+        disabled_rule_group      = {}
+        exclusion                = {}
+      }
+      custom_error_configuration = {}
+      redirect_configuration     = {
+        name = ""
+        redirect_type = "Found" // defined default
+        target_listener_name = null
+        target_url = null
+        include_path = null
+        include_query_string = null
+      }
+      autoscale_configuration = {
+        max_capacity = 2 // defined default
+      }
+      rewrite_rule_set = {
+        name = ""
+        rewrite_rule = {
+          name = ""
+          condition = {
+            ignore_case = null
+            negate = null
+          }
+          request_header_configuration = {}
+          response_header_configuration = {}
+          url = {
+            path = null
+            query_string  = null
+            components = null
+            reroute = null
+          }
+        }
+      }
+      tags             = {}
+    }
   }
 
   // compare and merge custom and default values
@@ -284,6 +480,10 @@ locals {
   virtual_network_gateway_connection_values = {
     for virtual_network_gateway_connection in keys(var.virtual_network_gateway_connection) :
     virtual_network_gateway_connection => merge(local.default.virtual_network_gateway_connection, var.virtual_network_gateway_connection[virtual_network_gateway_connection])
+  }
+  application_gateway_values = {
+    for application_gateway in keys(var.application_gateway) :
+    application_gateway => merge(local.default.application_gateway, var.application_gateway[application_gateway])
   }
 
   // deep merge of all custom and default values
@@ -421,5 +621,152 @@ locals {
   virtual_network_peering = {
     for virtual_network_peering in keys(var.virtual_network_peering) :
     virtual_network_peering => merge(local.default.virtual_network_peering, var.virtual_network_peering[virtual_network_peering])
+  }
+  application_gateway = {
+    for application_gateway in keys(var.application_gateway) :
+    application_gateway => merge(
+      local.application_gateway_values[application_gateway],
+      {
+        for config in ["sku","global","ssl_policy","autoscale_configuration"] :
+        config => merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config])
+      },
+      {
+        for config in ["identity", "waf_configuration"] :
+        config => lookup(var.application_gateway[application_gateway], config, {}) == {} ? null : merge(
+        local.default.application_gateway[config], local.application_gateway_values[application_gateway][config])
+      },
+      {
+        for config in [
+          "backend_address_pool",
+          "frontend_ip_configuration",
+          "frontend_port",
+          "gateway_ip_configuration",
+          "http_listener",
+          "request_routing_rule",
+        ] :
+        config => {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key])
+        }
+      },
+      {
+        for config in ["backend_http_settings"] :
+        config => {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(
+            merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key]),
+            {
+              for subconfig in ["authentication_certificate"] :
+              subconfig => lookup(local.application_gateway_values[application_gateway][config][key], subconfig, {}) == {} ? {} : {
+                for subkey in keys(local.application_gateway_values[application_gateway][config][key][subconfig]) :
+                subkey => merge(local.default.application_gateway[config][subconfig], local.application_gateway_values[application_gateway][config][key][subconfig][subkey])
+              }
+            },
+            {
+              for subconfig in ["connection_draining"] :
+              subconfig => merge(local.default.application_gateway[config][subconfig], lookup(local.application_gateway_values[application_gateway][config][key], subconfig, {}))
+            }
+          )
+        }
+      },
+      {
+        for config in [
+          "trusted_client_certificate",
+          "authentication_certificate",
+          "trusted_root_certificate",
+          "ssl_certificate",
+          "custom_error_configuration",
+          "redirect_configuration",
+        ] :
+        config => keys(local.application_gateway_values[application_gateway][config]) == keys(local.default.application_gateway[config]) ? {} : {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key])
+        }
+      },
+      {
+        for config in ["ssl_profile"] :
+        config => keys(local.application_gateway_values[application_gateway][config]) == keys(local.default.application_gateway[config]) ? {} : {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(
+            merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key]),
+            {
+              for subconfig in ["ssl_policy"] :
+              subconfig => merge(local.default.application_gateway[config][subconfig], lookup(local.application_gateway_values[application_gateway][config][key], subconfig, {}))
+            }
+          )
+        }
+      },
+      {
+        for config in ["probe"] :
+        config => keys(local.application_gateway_values[application_gateway][config]) == keys(local.default.application_gateway[config]) ? null : {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(
+            merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key]),
+            {
+              for subconfig in ["match"] :
+              subconfig => merge(local.default.application_gateway[config][subconfig], lookup(local.application_gateway_values[application_gateway][config][key], subconfig, {}))
+            }
+          )
+        }
+      },
+      {
+        for config in ["url_path_map"] :
+        config => keys(local.application_gateway_values[application_gateway][config]) == keys(local.default.application_gateway[config]) ? {} : {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(
+            merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key]),
+            {
+              for subconfig in ["path_rule"] :
+              subconfig => {
+                for subkey in keys(local.application_gateway_values[application_gateway][config][key][subconfig]) :
+                subkey =>
+                merge(local.default.application_gateway[config][subconfig], local.application_gateway_values[application_gateway][config][key][subconfig][subkey])
+              }
+            }
+          )
+        }
+      },
+      {
+        for config in ["rewrite_rule_set"] :
+        config => keys(local.application_gateway_values[application_gateway][config]) == keys(local.default.application_gateway[config]) ? {} : {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(
+            merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key]),
+            {
+              for subconfig in ["rewrite_rule"] :
+              subconfig => lookup(local.application_gateway_values[application_gateway][config][key], subconfig, {}) == {} ? {} : {
+                for subkey in keys(local.application_gateway_values[application_gateway][config][key][subconfig]) :
+                subkey => merge(
+                  merge(local.default.application_gateway[config][subconfig], local.application_gateway_values[application_gateway][config][key][subconfig][subkey]),
+                  {
+                    for subsubconfig in ["condition", "request_header_configuration", "response_header_configuration"]:
+                      subsubconfig => lookup(local.application_gateway_values[application_gateway][config][key][subconfig][subkey], subsubconfig, {}) == {} ? {} : {
+                        for subsubkey in keys(local.application_gateway_values[application_gateway][config][key][subconfig][subkey][subsubconfig]) :
+                        subsubkey => merge(local.default.application_gateway[config][subconfig][subsubconfig], local.application_gateway_values[application_gateway][config][key][subconfig][subkey][subsubconfig][subsubkey])
+                      }
+                  }
+                )
+              }
+            }
+          )
+        }
+      },
+      {
+        for config in ["private_link_configuration"] :
+        config => keys(local.application_gateway_values[application_gateway][config]) == keys(local.default.application_gateway[config]) ? {} : {
+          for key in keys(local.application_gateway_values[application_gateway][config]) :
+          key => merge(
+            merge(local.default.application_gateway[config], local.application_gateway_values[application_gateway][config][key]),
+            {
+              for subconfig in ["ip_configuration"] :
+              subconfig => {
+                for subkey in keys(local.application_gateway_values[application_gateway][config][key][subconfig]) :
+                subkey => merge(local.default.application_gateway[config][subconfig], local.application_gateway_values[application_gateway][config][key][subconfig][subkey])
+              }
+            }
+          )
+        }
+      }
+    )
   }
 }

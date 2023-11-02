@@ -130,6 +130,17 @@ output "virtual_network_peering" {
   }
 }
 
+output "application_gateway" {
+  description = "Outputs all attributes of resource_type."
+  value = {
+    for application_gateway in keys(azurerm_application_gateway.application_gateway) :
+    application_gateway => {
+      for key, value in azurerm_application_gateway.application_gateway[application_gateway] :
+      key => value
+    }
+  }
+}
+
 output "variables" {
   description = "Displays all configurable variables passed by the module. __default__ = predefined values per module. __merged__ = result of merging the default values and custom values passed to the module"
   value = {
@@ -185,6 +196,10 @@ output "variables" {
       virtual_network_peering = {
         for key in keys(var.virtual_network_peering) :
         key => local.virtual_network_peering[key]
+      }
+      application_gateway = {
+        for key in keys(var.application_gateway) :
+        key => local.application_gateway[key]
       }
     }
   }

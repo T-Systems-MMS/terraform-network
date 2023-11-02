@@ -23,6 +23,11 @@ module "network" {
       address_prefixes     = ["173.0.0.0/29"]
       virtual_network_name = module.network.virtual_network["vn-app-mms"].name
     }
+    snet-agw-mms = {
+      resource_group_name  = module.network.virtual_network["vn-app-mms"].resource_group_name
+      address_prefixes     = ["173.0.0.8/29"]
+      virtual_network_name = module.network.virtual_network["vn-app-mms"].name
+    }
     GatewaySubnet = {
       resource_group_name  = module.network.virtual_network["vn-mgmt-mms"].resource_group_name
       address_prefixes     = ["174.0.0.0/29"]
@@ -33,6 +38,13 @@ module "network" {
     pip-vpn-mms = {
       location            = "westeurope"
       resource_group_name = "rg-mms-github"
+    }
+    pip-agw-mms = {
+      location            = "westeurope"
+      resource_group_name = "rg-mms-github"
+      sku = "Standard"
+      allocation_method       = "Static"
+      zones = [1,2,3]
     }
   }
   network_interface = {
@@ -94,6 +106,7 @@ module "network" {
       resource_group_name        = module.network.virtual_network["vn-mgmt-mms"].resource_group_name
       type                       = "IPsec"
       virtual_network_gateway_id = module.network.virtual_network_gateway["vgw-mms"].id
+      local_network_gateway_id  = module.network.local_network_gateway["lgw-mms"].id
     }
   }
   virtual_network_peering = {
@@ -101,6 +114,50 @@ module "network" {
       resource_group_name       = module.network.virtual_network["vn-mgmt-mms"].resource_group_name
       virtual_network_name      = module.network.virtual_network["vn-mgmt-mms"].name
       remote_virtual_network_id = module.network.virtual_network["vn-db-mms"].id
+    }
+  }
+  application_gateway = {
+    agw-mms = {
+      location            = "westeurope"
+      resource_group_name = "rg-mms-github"
+      autoscale_configuration = {
+        min_capacity = 1
+      }
+      backend_address_pool = {
+        non-backend = {
+        }
+      }
+      backend_http_settings = {
+        http = {
+        }
+      }
+      frontend_ip_configuration = {
+        (module.network.public_ip["pip-agw-mms"].name) = {
+          public_ip_address_id = module.network.public_ip["pip-agw-mms"].id
+        }
+      }
+      frontend_port = {
+        http = {}
+      }
+      gateway_ip_configuration = {
+        public = {
+          subnet_id = module.network.subnet["snet-agw-mms"].id
+        }
+      }
+      http_listener = {
+        http = {
+          frontend_ip_configuration_name = module.network.public_ip["pip-agw-mms"].name
+          frontend_port_name = "http"
+        }
+      }
+      request_routing_rule = {
+        non-backend = {
+          http_listener_name = "http"
+          backend_http_settings_name = "http"
+          backend_address_pool_name = "non-backend"
+          priority = 1
+        }
+      }
     }
   }
 }
