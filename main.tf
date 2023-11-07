@@ -1,9 +1,7 @@
 /**
 * # network
-*
 * This module manages the hashicorp/azurerm network resources.
 * For more information see https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs > network
-*
 */
 
 resource "azurerm_virtual_network" "virtual_network" {
