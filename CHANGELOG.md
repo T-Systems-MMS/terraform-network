@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.3](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.3) (2024-08-28)
+
+[Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/3.0.2...3.0.3)
+
+**Implemented enhancements:**
+
+- Pin version of azurerm to compatible state   [\#36](https://github.com/telekom-mms/terraform-azurerm-network/pull/36) ([michaelamattes](https://github.com/michaelamattes))
+
+**Merged pull requests:**
+
+- run terrascan in test setting directory [\#31](https://github.com/telekom-mms/terraform-azurerm-network/pull/31) ([michaelamattes](https://github.com/michaelamattes))
+
 ## [3.0.2](https://github.com/telekom-mms/terraform-azurerm-network/tree/3.0.2) (2023-10-13)
 
 [Full Changelog](https://github.com/telekom-mms/terraform-azurerm-network/compare/3.0.1...3.0.2)
@@ -28,10 +40,6 @@
 **Fixed bugs:**
 
 - fix errors with subnet delegation [\#27](https://github.com/telekom-mms/terraform-azurerm-network/pull/27) ([sjedlick](https://github.com/sjedlick))
-
-**Closed issues:**
-
-- Dependency Dashboard [\#11](https://github.com/telekom-mms/terraform-azurerm-network/issues/11)
 
 **Merged pull requests:**
 
